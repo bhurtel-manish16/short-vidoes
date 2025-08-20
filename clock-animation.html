@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Analog Watch UI</title>
+<style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+.wrapper {
+  position: relative;
+  width: 400px;
+  height: 400px;
+}
+
+.watch-case {
+  width: 100%;
+  height: 100%;
+  border: 10px solid #cfd0d1;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #fff 60%, #ddd 100%);
+  position: relative;
+  box-shadow: inset 0 0 8px #bbb;
+}
+
+.watch-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 85%;
+  height: 85%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: white;
+}
+
+.watch-points i {
+  position: absolute;
+  width: 2px;
+  height: 10px;
+  background: #ccc;
+  top: 0;
+  left: 50%;
+  transform-origin: bottom center;
+}
+
+.watch-points i:nth-child(n) {
+  transform: rotate(calc(var(--i) * 6deg)) translateY(-50%);
+}
+
+.watch-points i {
+  --i: 0;
+}
+.watch-points i:nth-child(n) {
+  --i: calc(var(--i) + 1);
+}
+
+.watch-tips span {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  background: black;
+  border-radius: 2px;
+}
+
+.hours {
+  height: 80px;
+  width: 6px;
+  background: white;
+  transform: rotate(300deg);
+}
+
+.minutes {
+  height: 120px;
+  width: 4px;
+  background: black;
+  transform: rotate(15deg);
+}
+
+.seconds {
+  height: 140px;
+  width: 2px;
+  background: red;
+  transform: rotate(45deg);
+}
+
+.watch-date {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.watch-alert {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  text-align: center;
+  transform: translateX(-50%);
+  font-size: 13px;
+  color: #888;
+}
+.watch-alert strong {
+  color: #e03c31;
+}
+
+.watch-week {
+  position: absolute;
+  left: 20%;
+  top: 40%;
+  width: 60px;
+  text-align: center;
+}
+.watch-week ul {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #444;
+}
+
+.watch-day {
+  position: absolute;
+  right: 15%;
+  top: 40%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.moon-phase {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  background: #0a2c77;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.moon-phase .circle {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+
+.seconds {
+  width: 2px;
+  height: 110px;
+  background: red;
+  z-index: 1;
+  animation: rotate-second 60s linear infinite;
+}
+
+@keyframes rotate-second {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.watch-alert {
+  animation: glow 2s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 5px red;
+  }
+  50% {
+    text-shadow: 0 0 15px red;
+  }
+}
+</style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="watch-strap">
+      <div class="strap-circle"></div>
+      <div class="strap"></div>
+      <div class="watch-strap-holder left-up"></div>
+      <div class="watch-strap-holder left-bottom"></div>
+      <div class="watch-strap-holder right-up"></div>
+      <div class="watch-strap-holder right-bottom"></div>
+      <div class="watch-lace">
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        <span class="top"></span>
+        <span class="bottom"></span>
+      </div>
+    </div>
+    <div class="watch-case">
+      <div class="reflection"></div>
+      <div class="reflection bottom"></div>
+      <div class="watch-center">
+        <div class="watch-points">
+          <!-- 60 small tick marks -->
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="watch-tips">
+          <span class="hours"></span>
+          <span class="minutes"></span>
+          <span class="seconds"></span>
+        </div>
+        <div class="watch-date">17 SEP</div>
+        <div class="watch-alert">YOUR MEETING<br><span>IN <strong>15 MIN</strong></span></div>
+        <div class="watch-week">
+          <span class="week-arrow"></span>
+          <ul>
+            <div>S</div>
+            <div>M</div>
+            <div>T</div>
+            <div>W</div>
+            <div>T</div>
+            <div>F</div>
+            <div>S</div>
+          </ul>
+        </div>
+        <div class="watch-day">
+          <div class="moon-phase">
+            <div class="circle"></div>
+            <div class="cutout"></div>
+          </div>
+          <ul>
+            <div>3</div>
+            <div>6</div>
+            <div>9</div>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

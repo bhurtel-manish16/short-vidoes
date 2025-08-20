@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossy Futuristic Glass Login</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #1e3c72, #2a5298);
+        background-size: 400% 400%;
+        animation: gradientBG 12s ease infinite;
+        overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .login-container {
+        position: relative;
+        width: 260px;
+        height: 60px;
+        transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .login-container:hover {
+        height: 230px;
+    }
+
+    /* Neon Glow Animation */
+    @keyframes borderGlow {
+        0%   { border-color: #ff4e50; box-shadow: 0 0 20px #ff4e50; }
+        25%  { border-color: #f9d423; box-shadow: 0 0 20px #f9d423; }
+        50%  { border-color: #1e90ff; box-shadow: 0 0 20px #1e90ff; }
+        75%  { border-color: #32cd32; box-shadow: 0 0 20px #32cd32; }
+        100% { border-color: #ff4e50; box-shadow: 0 0 20px #ff4e50; }
+    }
+
+    /* Glossy Glass Button */
+    .login-btn {
+        display: block;
+        width: 100%;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 2px solid #ff4e50;
+        backdrop-filter: blur(12px);
+        color: #fff;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 60px;
+        cursor: pointer;
+        border-radius: 12px;
+        animation: borderGlow 4s linear infinite;
+        transition: background 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Gloss shine layer */
+    .login-btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(255,255,255,0.4), rgba(255,255,255,0));
+        transform: skewX(-25deg);
+        animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+        0% { left: -75%; }
+        50% { left: 125%; }
+        100% { left: 125%; }
+    }
+
+    .login-btn:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* Form glass styling */
+    .login-form {
+        margin-top: 10px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        backdrop-filter: blur(15px);
+        padding: 15px;
+        border-radius: 12px;
+        transform: translateY(-20px);
+        opacity: 0;
+        transition:
+            transform 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+            opacity 0.6s ease;
+        transition-delay: 0.05s;
+        box-shadow: 0 0 25px rgba(255,255,255,0.15);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Gloss effect for form */
+    .login-form::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(255,255,255,0.3), rgba(255,255,255,0));
+        transform: skewX(-25deg);
+        animation: shine 4s infinite;
+    }
+
+    .login-container:hover .login-form {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .login-form input {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 5px;
+        outline: none;
+        font-size: 14px;
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        box-shadow: inset 0 0 8px rgba(255,255,255,0.1);
+    }
+
+    .login-form input::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Glossy gradient submit button */
+    .login-form button {
+        width: 100%;
+        padding: 10px;
+        background: linear-gradient(90deg, #ff4e50, #f9d423, #1e90ff, #32cd32);
+        background-size: 300% 300%;
+        color: black;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        animation: buttonGradient 5s ease infinite;
+        transition: transform 0.25s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Gloss layer for submit button */
+    .login-form button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -75%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(120deg, rgba(255,255,255,0.5), rgba(255,255,255,0));
+        transform: skewX(-25deg);
+        animation: shine 3s infinite;
+    }
+
+    @keyframes buttonGradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .login-form button:hover {
+        transform: scale(1.05);
+    }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+    <div class="login-btn">Login</div>
+    <form class="login-form">
+        <input type="email" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>
