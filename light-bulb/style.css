@@ -1,0 +1,206 @@
+* {
+  box-sizing: border-box;
+}
+:root {
+  --depth: 5vmin;
+  --on: 0;
+  --size: 25vmin;
+  --bg: hsl(calc(200 - (var(--on) * 160)), calc((20 + (var(--on) * 50)) * 1%), calc((20 + (var(--on) * 60)) * 1%));
+  --cord: hsl(0, 0%, calc((60 - (var(--on) * 50)) * 1%));
+  --stroke: hsl(0, 0%, calc((60 - (var(--on) * 50)) * 1%));
+  --shine: hsla(0, 0%, 100%, calc(0.75 - (var(--on) * 0.5)));
+  --cap: hsl(0, 0%, calc((40 + (var(--on) * 30)) * 1%));
+  --filament: hsl(45, calc(var(--on) * 80%), calc((25 + (var(--on) * 75)) * 1%));
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  overflow: hidden;
+}
+label {
+  position: absolute;
+  opacity: 0.5;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+input {
+  height: 0;
+  width: 0;
+  position: fixed;
+  left: 100%;
+  transform: scale(0);
+}
+.toggle {
+  height: var(--size);
+  width: var(--size);
+  transform: translate(-50%, -100%);
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate3d(-50%, -100%, calc(var(--depth) * 3));
+}
+.toggle-scene {
+  overflow: visible !important;
+  width: 100%;
+  position: absolute;
+}
+.toggle-scene__arm {
+  display: none;
+}
+.toggle-scene__cord {
+  stroke: var(--cord);
+  cursor: move;
+}
+.toggle-scene__cord:nth-of-type(1) {
+  display: none;
+}
+.toggle-scene__cord:nth-of-type(2),
+.toggle-scene__cord:nth-of-type(3),
+.toggle-scene__cord:nth-of-type(4),
+.toggle-scene__cord:nth-of-type(5) {
+  display: none;
+}
+.toggle-scene__cord-end {
+  stroke: var(--cord);
+  fill: var(--cord);
+}
+.toggle-scene__dummy-cord {
+  stroke-width: 6;
+  stroke: var(--cord);
+}
+.bulb__filament {
+  stroke: var(--filament);
+}
+.bulb__shine {
+  stroke: var(--shine);
+}
+.bulb__flash {
+  stroke: #f5e0a3;
+  display: none;
+}
+.bulb__bulb {
+  stroke: var(--stroke);
+  fill: hsla(calc(180 - (95 * var(--on))), 80%, 80%, calc(0.1 + (0.4 * var(--on))));
+}
+.bulb__cap {
+  fill: var(--cap);
+}
+.bulb__cap-shine {
+  fill: var(--shine);
+}
+.bulb__cap-outline {
+  stroke: var(--stroke);
+}
+.bear {
+  display: none;
+}
+.bear__fur {
+  fill: #784421;
+}
+.bear__pad {
+  fill: #deaa87;
+}
+.doorway {
+  position: absolute;
+  top: 50%;
+  height: calc(var(--size) * 4);
+  width: calc(var(--size) * 1.5);
+  transform: translate(0, calc(var(--size) * -0.75));
+  left: calc(50% + (var(--size) * 0.5));
+  -webkit-clip-path: inset(0 0 0 -200%);
+  clip-path: inset(0 0 0 -200%);
+}
+.doorway__opening {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: #1a1a1a;
+  transform: translate3d(0, 0, calc(var(--depth) * -1));
+}
+.bear {
+  position: absolute;
+  top: 10%;
+  width: var(--size);
+}
+.door {
+  --panel: hsl(30, 20%, calc(12% + (var(--on) * 40%)));
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  transform-origin: 100% 50%;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+}
+.door__panel {
+  width: 30%;
+  height: 35%;
+  position: absolute;
+  border: 1vmin var(--panel) solid;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translate(var(--x), var(--y));
+}
+.door__panel:nth-of-type(1) {
+  --x: -70%;
+  --y: -70%;
+}
+.door__panel:nth-of-type(2) {
+  --x: 70%;
+  --y: -70%;
+}
+.door__panel:nth-of-type(3) {
+  --x: -70%;
+  --y: 70%;
+}
+.door__panel:nth-of-type(4) {
+  --x: 70%;
+  --y: 70%;
+}
+.door__handle {
+  height: 4vmin;
+  width: 4vmin;
+  position: absolute;
+  left: 10%;
+  top: 50%;
+  transform: translate3d(0, -50%, 1vmin);
+}
+.door__handle > div {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: hsl(45, 70%, calc((var(--lightness, 20%)) + (var(--on) * 40%)));
+}
+.door__handle > div:nth-of-type(1) {
+  --lightness: 25%;
+}
+.door__handle > div:nth-of-type(2) {
+  --lightness: 30%;
+  transform: translate3d(0, 0, calc(var(--depth) * 1));
+}
+.door__side {
+  position: absolute;
+}
+.door__side:nth-of-type(1) {
+  --lightness: 20%;
+  height: 100%;
+  width: 100%;
+  transform: translate3d(0, 0, 0);
+  z-index: 3;
+  background-color: hsl(30, 20%, calc((var(--lightness, 20%)) + (var(--on) * 40%)));
+}
+.door__side:nth-of-type(2) {
+  --lightness: 10%;
+  height: 100%;
+  width: 100%;
+  transform: translate3d(0, 0, calc(var(--depth) * -1));
+}
+.door__side {
+  background-color: hsl(30, 20%, calc((var(--lightness, 20%)) + (var(--on) * 40%)));
+}
