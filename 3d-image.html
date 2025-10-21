@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+	margin: 0;
+	height: 100vh;
+	background: #111;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+	font-family: sans-serif;
+}
+
+.carousel-wrapper {
+	perspective: 1000px;
+	width: 300px;
+	height: 400px;
+}
+
+.carousel {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	transform-style: preserve-3d;
+	transition: transform 0.5s ease;
+}
+
+.card {
+	position: absolute;
+	width: 300px;
+	height: 200px;
+	background-size: cover;
+	background-position: center;
+	border-radius: 15px;
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+	cursor: pointer;
+	top: 100px;
+	left: 0;
+	z-index: 1;
+}
+
+/* ✨ GLOW EFFECT */
+.card::before {
+	content: "";
+	position: absolute;
+	top: -10px;
+	left: -10px;
+	right: -10px;
+	bottom: -10px;
+	background: radial-gradient(
+		circle at center,
+		rgba(255, 255, 255, 0.4) 10%,
+		transparent 110%
+	);
+	border-radius: 20px;
+	z-index: -1;
+	animation: pulseGlow 3s infinite ease-in-out;
+	filter: blur(20px);
+	opacity: 0.6;
+}
+
+@keyframes pulseGlow {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 0.6;
+	}
+	50% {
+		transform: scale(1.1);
+		opacity: 1;
+	}
+}
+
+/* LIGHTBOX */
+.lightbox-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.8);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 999;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease;
+}
+
+.lightbox-overlay.active {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+.lightbox-img {
+	max-width: 90%;
+	max-height: 80%;
+	border-radius: 10px;
+	box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+	position: relative;
+}
+
+.close-btn {
+	position: absolute;
+	top: 20px;
+	right: 30px;
+	font-size: 30px;
+	color: #fff;
+	cursor: pointer;
+	z-index: 1000;
+}
+
+    </style>
+</head>
+<body>
+    <div class="carousel-wrapper">
+	<div class="carousel" id="carousel"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox">
+	<span class="close-btn" id="closeBtn">&times;</span>
+	<img class="lightbox-img" id="lightboxImg" src="" alt="Vergrote afbeelding">
+</div>
+<script>
+    const carousel = document.getElementById("carousel");
+const numCards = 6;
+const angleStep = 360 / numCards;
+const radius = 180;
+
+const items = [
+	{ src: "https://iili.io/3MFDjiG.jpg", caption: "" }, // optional caption is vissable text.
+	{ src: "https://iili.io/3MFDNff.jpg", caption: "" },
+	{ src: "https://iili.io/3MFDOl4.jpg", caption: "" },
+	{ src: "https://iili.io/3MFDhVs.jpg", caption: "" },
+	{ src: "https://iili.io/3MFD4Wu.jpg", caption: "" },
+	{ src: "https://iili.io/3MFDrxe.jpg", caption: "" }
+];
+
+items.forEach((item, i) => {
+	const card = document.createElement("div");
+	card.className = "card";
+	card.style.transform = `rotateX(${i * angleStep}deg) translateZ(${radius}px)`;
+	card.style.backgroundImage = `url('${item.src}')`;
+	card.addEventListener("click", () => openLightbox(item.src));
+
+	const caption = document.createElement("div");
+	caption.className = "caption";
+	caption.innerText = item.caption;
+	card.appendChild(caption);
+
+	carousel.appendChild(card);
+});
+
+// auto rotation stop mouseover
+carousel.addEventListener("mouseover", () => {
+	clearInterval(rotationInterval);
+});
+
+// auto rotation start mouseout
+carousel.addEventListener("mouseout", () => {
+	rotationInterval = setInterval(() => {
+		currentRotation += angleStep;
+		carousel.style.transform = `rotateX(${currentRotation}deg)`;
+	}, 3000);
+});
+
+// auto rotation
+let rotationInterval = setInterval(() => {
+	currentRotation += angleStep;
+	carousel.style.transform = `rotateX(${currentRotation}deg)`;
+}, 3000);
+
+// ROTATION
+let startY;
+let currentRotation = 0;
+document.addEventListener("mousedown", (e) => {
+	startY = e.clientY;
+	document.onmousemove = (e) => {
+		const deltaY = e.clientY - startY;
+		startY = e.clientY;
+		currentRotation += deltaY * 0.5;
+		carousel.style.transform = `rotateX(${currentRotation}deg)`;
+	};
+	document.onmouseup = () => {
+		document.onmousemove = null;
+		document.onmouseup = null;
+	};
+});
+
+document.addEventListener("touchstart", (e) => {
+	startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchmove", (e) => {
+	const deltaY = e.touches[0].clientY - startY;
+	startY = e.touches[0].clientY;
+	currentRotation += deltaY * 0.5;
+	carousel.style.transform = `rotateX(${currentRotation}deg)`;
+});
+
+// LIGHTBOX
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightboxImg");
+const closeBtn = document.getElementById("closeBtn");
+
+function openLightbox(src) {
+	lightboxImg.src = src;
+	lightbox.classList.add("active");
+}
+
+function closeLightbox() {
+	lightbox.classList.remove("active");
+	setTimeout(() => {
+		lightboxImg.src = "";
+	}, 300);
+}
+
+lightbox.addEventListener("click", (e) => {
+	if (e.target === lightbox || e.target === closeBtn) {
+		closeLightbox();
+	}
+});
+
+</script>
+</body>
+</html>

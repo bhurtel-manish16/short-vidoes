@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Animated Send Button</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%23ffffff" opacity="0.15"/><circle cx="20" cy="80" r="0.5" fill="%23ffffff" opacity="0.15"/><circle cx="90" cy="30" r="0.5" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+            pointer-events: none;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 50%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        .button-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .glow-ring {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #667eea, #764ba2, #f093fb, #667eea);
+            padding: 3px;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: rotate 4s linear infinite;
+        }
+
+        .glow-ring::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            padding: 3px;
+            background: conic-gradient(from 0deg, #667eea, #764ba2, #f093fb, #667eea);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            filter: blur(8px);
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .send-button {
+            width: 180px;
+            height: 64px;
+            border: none;
+            border-radius: 32px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .send-button::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 32px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .send-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 
+                0 16px 40px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .send-button:hover::before {
+            opacity: 1;
+        }
+
+        .send-button.runway {
+            background: rgba(44, 44, 44, 0.9);
+            backdrop-filter: blur(20px);
+            border-color: rgba(255, 215, 0, 0.6);
+            box-shadow: 
+                0 8px 32px rgba(255, 215, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .runway-line {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            right: 10px;
+            height: 2px;
+            background: transparent;
+            transform: translateY(-1px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .runway-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent 0px,
+                transparent 8px,
+                #ffd700 8px,
+                #ffd700 16px
+            );
+            animation: runway-glow 0.5s ease-in-out infinite alternate;
+        }
+
+        .send-button.runway .runway-line {
+            opacity: 1;
+        }
+
+        @keyframes runway-glow {
+            0% { filter: brightness(1) drop-shadow(0 0 2px #ffd700); }
+            100% { filter: brightness(1.3) drop-shadow(0 0 6px #ffd700); }
+        }
+
+        .plane {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            opacity: 0;
+            z-index: 20;
+            transform: translate(-50px, 0px) rotate(45deg);
+            top: 50%;
+            margin-top: -15px;
+        }
+
+        .plane svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .button-text {
+            position: relative;
+            z-index: 15;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 0.5px;
+        }
+
+        .send-button.runway .button-text {
+            opacity: 0;
+        }
+
+        @keyframes plane-taxi {
+            0% {
+                transform: translate(-60px, 0px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(30px, 0px) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes plane-takeoff {
+            0% {
+                transform: translate(30px, 0px) rotate(0deg);
+                opacity: 1;
+            }
+            15% {
+                transform: translate(55px, -3px) rotate(-12deg);
+                opacity: 1;
+            }
+            60% {
+                transform: translate(160px, -50px) rotate(-42deg);
+                opacity: 1;
+            }
+            75% {
+                transform: translate(205px, -80px) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(285px, -145px) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+
+        .plane.taxi {
+            animation: plane-taxi 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .plane.takeoff {
+            animation: plane-takeoff 3.5s cubic-bezier(0.25, 0.46, 0.35, 0.94) forwards;
+        }
+
+        .particles {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 4px;
+            opacity: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: #ffd93d;
+            animation: particleBurst 1.2s ease-out forwards;
+        }
+
+        @keyframes particleBurst {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .success-message {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(16, 185, 129, 0.95);
+            backdrop-filter: blur(20px);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 
+                0 16px 40px rgba(16, 185, 129, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .success-message.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .success-message::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(16, 185, 129, 0.95);
+        }
+
+        .floating-emojis {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .floating-emoji {
+            animation: floatUp 2s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg) scale(0.5);
+            }
+        }
+
+        .send-button.runway .glow-ring {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 480px) {
+            .button-container {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .send-button {
+                width: 160px;
+                height: 56px;
+                font-size: 16px;
+            }
+        }
+
+        /* Add click ripple effect */
+        @keyframes ripple {
+            to {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="button-container">
+        <div class="glow-ring"></div>
+        
+        <button class="send-button" id="sendBtn">
+            <span class="button-text">Send Message</span>
+            <div class="runway-line"></div>
+            <div class="plane" id="plane">
+                <svg width="30px" height="30px" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000" transform="rotate(45)">
+                    <g id="SVGRepo_bgCarrier" stroke-width="0"/>
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+                    <g id="SVGRepo_iconCarrier">
+                        <path d="M930.21885 94.836128c31.585402 30.754207 32.224782 81.297243 1.438607 112.850675l-133.278886 133.310856-154.602229 154.634198-219.403453 219.403453-161.667385 52.493147 48.78474-165.407761 215.375355-215.343387 150.126565-150.126564 140.376011-140.344042c30.754207-31.585402 81.297243-32.256751 112.850675-1.470575z" fill="#5FCEFF"/>
+                        <path d="M832.553464 529.742812l50.798789 280.78399-52.7489 52.7489-186.827011-367.643845 154.602229-154.634198zM676.992164 236.650745l-150.126565 150.126564-351.307671-178.579001 52.7489-52.7489 448.653367 81.169368z" fill="#8B87C1"/>
+                        <path d="M424.372889 715.03531l-25.926884 183.726015-56.489276 56.553214-79.251225-187.786082z" fill="#FFB578"/>
+                        <path d="M311.490244 602.120696l-48.78474 165.407761-189.128781-80.593925 57.384408-55.658081z" fill="#FF4893"/>
+                    </g>
+                </svg>
+            </div>
+        </button>
+        
+        <div class="particles" id="particles"></div>
+        
+        <div class="success-message" id="successMsg">
+            <span>✈️</span>
+            Package delivered successfully!
+        </div>
+        
+        <div class="floating-emojis" id="floatingEmojis"></div>
+    </div>
+
+    <script>
+        const sendBtn = document.getElementById('sendBtn');
+        const plane = document.getElementById('plane');
+        const buttonText = sendBtn.querySelector('.button-text');
+        const successMsg = document.getElementById('successMsg');
+        const particles = document.getElementById('particles');
+        const floatingEmojis = document.getElementById('floatingEmojis');
+        
+        let isAnimating = false;
+
+        function createParticles() {
+            const particleCount = 12;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const angle = (i / particleCount) * Math.PI * 2;
+                const distance = 60 + Math.random() * 40;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                particle.style.setProperty('--x', `${x}px`);
+                particle.style.setProperty('--y', `${y}px`);
+                particle.style.background = ['#ffd93d', '#ff6b6b', '#4ecdc4', '#45b7d1'][Math.floor(Math.random() * 4)];
+                particles.appendChild(particle);
+                
+                setTimeout(() => particle.remove(), 1200);
+            }
+        }
+
+        function createFloatingEmojis() {
+            const emojis = ['✨', '🌟', '💫', '⭐', '🎉'];
+            for (let i = 0; i < 5; i++) {
+                const emojiEl = document.createElement('div');
+                emojiEl.className = 'floating-emoji';
+                emojiEl.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emojiEl.style.left = (Math.random() * 200 - 100) + 'px';
+                emojiEl.style.top = (Math.random() * 40 - 20) + 'px';
+                emojiEl.style.animationDelay = (i * 0.2) + 's';
+                floatingEmojis.appendChild(emojiEl);
+                
+                setTimeout(() => emojiEl.remove(), 2000);
+            }
+        }
+
+        sendBtn.addEventListener('click', function() {
+            if (isAnimating) return;
+            
+            isAnimating = true;
+            
+            // Change button to runway style with modern glassmorphism
+            this.classList.add('runway');
+            
+            // Start plane taxi animation (keeping original timing)
+            plane.classList.add('taxi');
+            
+            // Create particles during taxi
+            setTimeout(() => createParticles(), 500);
+            
+            // After taxi completes, start takeoff (keeping original timing)
+            setTimeout(() => {
+                plane.classList.remove('taxi');
+                plane.classList.add('takeoff');
+            }, 1500);
+            
+            // Show modern success message
+            setTimeout(() => {
+                successMsg.classList.add('show');
+                createFloatingEmojis();
+            }, 4500);
+            
+            // Hide success message
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 6500);
+            
+            // Reset everything (keeping original timing)
+            setTimeout(() => {
+                this.classList.remove('runway');
+                plane.classList.remove('takeoff');
+                plane.style.transform = '';
+                plane.style.opacity = '';
+                isAnimating = false;
+            }, 7000);
+        });
+
+        // Add modern hover effects
+        sendBtn.addEventListener('mouseenter', function() {
+            if (!isAnimating) {
+                this.style.transform = 'translateY(-2px) scale(1.02)';
+            }
+        });
+
+        sendBtn.addEventListener('mouseleave', function() {
+            if (!isAnimating) {
+                this.style.transform = '';
+            }
+        });
+
+        // Add click ripple effect
+        sendBtn.addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                left: ${x}px;
+                top: ${y}px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                transform: scale(0);
+                animation: ripple 0.6s ease-out;
+                pointer-events: none;
+                z-index: 5;
+            `;
+            
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    </script>
+</body>
+</html>

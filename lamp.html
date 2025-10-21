@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Lamp</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #0a0a0a;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 1s ease;
+    position: relative;
+}
+
+/* Light Physics - Coming from lamp bottom, illuminating entire page like daylight */
+body.level-1 {
+    background: radial-gradient(ellipse 120% 80% at 50% 45%, 
+        rgba(255, 235, 180, 0.15) 0%,
+        rgba(255, 220, 150, 0.08) 40%,
+        rgba(255, 200, 120, 0.04) 60%,
+        #1a1a1a 85%
+    );
+}
+
+body.level-2 {
+    background: radial-gradient(ellipse 140% 100% at 50% 45%, 
+        rgba(255, 240, 200, 0.35) 0%,
+        rgba(255, 230, 180, 0.20) 30%,
+        rgba(255, 210, 140, 0.12) 50%,
+        rgba(255, 190, 100, 0.06) 70%,
+        #2a2a2a 90%
+    );
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    z-index: 2;
+    position: relative;
+}
+
+.lamp-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Modern Redesigned Lamp Structure */
+.lamp {
+    position: relative;
+    z-index: 10;
+}
+
+/* Light Glow Effect - From bottom of lamp, realistic physics */
+.light-glow {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    height: 300px;
+    background: radial-gradient(ellipse, transparent 0%, transparent 100%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 1s ease;
+    pointer-events: none;
+    filter: blur(40px);
+    z-index: 1;
+}
+
+.light-glow.level-1 {
+    opacity: 0.6;
+    background: radial-gradient(ellipse, rgba(255, 235, 180, 0.4) 0%, rgba(255, 220, 150, 0.2) 40%, transparent 80%);
+    transform: translateX(-50%) scale(1.2);
+}
+
+.light-glow.level-2 {
+    opacity: 1;
+    background: radial-gradient(ellipse, rgba(255, 240, 200, 0.7) 0%, rgba(255, 230, 180, 0.4) 30%, rgba(255, 210, 140, 0.2) 60%, transparent 90%);
+    transform: translateX(-50%) scale(1.8);
+}
+
+/* Redesigned Modern Lamp Shade */
+.lamp-shade {
+    width: 220px;
+    height: 140px;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.shade-top {
+    width: 180px;
+    height: 20px;
+    background: linear-gradient(145deg, #f0f0f0, #d0d0d0);
+    border-radius: 90px 90px 0 0;
+    margin: 0 auto;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.shade-body {
+    width: 220px;
+    height: 100px;
+    background: linear-gradient(145deg, #e8e8e8, #c8c8c8);
+    border-radius: 5px;
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.5),
+        inset 0 2px 5px rgba(255, 255, 255, 0.3),
+        inset 0 -10px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.shade-body::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    right: 20px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+    border-radius: 2px;
+}
+
+.shade-bottom {
+    width: 200px;
+    height: 15px;
+    background: linear-gradient(145deg, #d0d0d0, #a0a0a0);
+    margin: 0 auto;
+    border-radius: 0 0 100px 100px;
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.4),
+        inset 0 2px 5px rgba(255, 255, 255, 0.2);
+}
+
+.shade-rim {
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 210px;
+    height: 8px;
+    background: linear-gradient(90deg, #888, #aaa, #888);
+    border-radius: 4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+}
+
+.lamp-shade.level-1 {
+    box-shadow: 0 0 30px rgba(255, 235, 180, 0.4);
+}
+
+.lamp-shade.level-1 .shade-body {
+    background: linear-gradient(145deg, #fff8e6, #f0e6cc);
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.3),
+        inset 0 2px 5px rgba(255, 255, 255, 0.4),
+        inset 0 -10px 20px rgba(255, 235, 180, 0.3),
+        0 0 40px rgba(255, 235, 180, 0.5);
+}
+
+.lamp-shade.level-2 {
+    box-shadow: 0 0 60px rgba(255, 240, 200, 0.8);
+}
+
+.lamp-shade.level-2 .shade-body {
+    background: linear-gradient(145deg, #fffaf0, #fff0d0);
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.2),
+        inset 0 2px 5px rgba(255, 255, 255, 0.5),
+        inset 0 -10px 20px rgba(255, 240, 200, 0.5),
+        0 0 80px rgba(255, 240, 200, 0.8);
+}
+
+/* Modern Lamp Stand */
+.lamp-stand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stand-neck {
+    width: 12px;
+    height: 120px;
+    background: linear-gradient(90deg, #666, #888, #666);
+    border-radius: 6px;
+    box-shadow: 
+        3px 0 8px rgba(0, 0, 0, 0.4),
+        -3px 0 8px rgba(0, 0, 0, 0.4),
+        inset 1px 0 3px rgba(255, 255, 255, 0.3),
+        inset -1px 0 3px rgba(0, 0, 0, 0.3);
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.stand-joint {
+    width: 20px;
+    height: 15px;
+    background: linear-gradient(145deg, #777, #555);
+    border-radius: 10px;
+    box-shadow: 
+        0 3px 8px rgba(0, 0, 0, 0.5),
+        inset 0 1px 3px rgba(255, 255, 255, 0.2);
+    margin-bottom: -5px;
+    z-index: 2;
+    position: relative;
+}
+
+.stand-base {
+    width: 140px;
+    height: 50px;
+    background: linear-gradient(145deg, #888, #666);
+    border-radius: 70px;
+    box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.6),
+        inset 0 3px 8px rgba(255, 255, 255, 0.2),
+        inset 0 -3px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.base-ring {
+    position: absolute;
+    width: 120px;
+    height: 35px;
+    background: linear-gradient(145deg, #999, #777);
+    border-radius: 60px;
+    box-shadow: 
+        inset 0 2px 5px rgba(0, 0, 0, 0.4),
+        inset 0 -2px 5px rgba(255, 255, 255, 0.2);
+}
+
+.base-center {
+    width: 60px;
+    height: 20px;
+    background: linear-gradient(145deg, #aaa, #888);
+    border-radius: 30px;
+    box-shadow: 
+        inset 0 1px 3px rgba(0, 0, 0, 0.3),
+        0 1px 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Redesigned Switch with 3 Levels */
+.lamp-switch {
+    position: absolute;
+    right: -60px;
+    top: 40%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.switch-body {
+    width: 50px;
+    height: 120px;
+    background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+    border-radius: 25px;
+    box-shadow: 
+        5px 5px 15px rgba(0, 0, 0, 0.8),
+        inset 3px 3px 8px rgba(255, 255, 255, 0.05),
+        inset -3px -3px 8px rgba(0, 0, 0, 0.5);
+    border: 3px solid #333;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.switch-button {
+    width: 38px;
+    height: 32px;
+    background: linear-gradient(145deg, #555, #333);
+    border-radius: 19px;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        3px 3px 12px rgba(0, 0, 0, 0.9),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.1);
+    border: 2px solid #444;
+}
+
+.switch-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background: #ff3333;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+}
+
+.switch-levels {
+    position: absolute;
+    right: -45px;
+    top: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.level-indicator {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 10px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Switch Level Positions */
+.switch-button.level-0 {
+    top: 6px;
+}
+
+.switch-button.level-0::before {
+    background: #ff3333;
+    box-shadow: 0 0 8px rgba(255, 51, 51, 0.6);
+}
+
+.switch-button.level-1 {
+    top: 44px;
+    background: linear-gradient(145deg, #666, #444);
+}
+
+.switch-button.level-1::before {
+    background: #ffaa33;
+    box-shadow: 0 0 12px rgba(255, 170, 51, 0.8);
+}
+
+.switch-button.level-2 {
+    top: 82px;
+    background: linear-gradient(145deg, #777, #555);
+}
+
+.switch-button.level-2::before {
+    background: #33ff33;
+    box-shadow: 0 0 16px rgba(51, 255, 51, 1);
+}
+
+/* Active level indicators */
+.level-indicator.active {
+    color: #fff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.switch-body:hover {
+    transform: scale(1.05);
+    box-shadow: 
+        6px 6px 18px rgba(0, 0, 0, 0.9),
+        inset 3px 3px 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Simplified Controls - Small corner box */
+.controls {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    border-radius: 10px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    text-align: center;
+    min-width: auto;
+    width: auto;
+}
+
+.controls h2 {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: normal;
+    text-shadow: none;
+}
+
+.brightness-display {
+    margin: 6px 0;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brightness-display span {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+}
+
+.brightness-display span.level-0 {
+    color: #ff6666;
+    text-shadow: 0 0 10px rgba(255, 102, 102, 0.6);
+}
+
+.brightness-display span.level-1 {
+    color: #ffaa66;
+    text-shadow: 0 0 10px rgba(255, 170, 102, 0.6);
+}
+
+.brightness-display span.level-2 {
+    color: #66ff66;
+    text-shadow: 0 0 12px rgba(102, 255, 102, 0.8);
+}
+
+.instruction {
+    display: none;
+}
+
+/* GitHub Logo - Left Corner */
+.github-link {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+}
+
+.github-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.9);
+}
+
+.github-link svg {
+    width: 24px;
+    height: 24px;
+    fill: #fff;
+    transition: fill 0.3s ease;
+}
+
+.github-link:hover svg {
+    fill: #4CAF50;
+}
+
+/* Portfolio Link - Right Bottom Corner */
+.portfolio-link {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8);
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.portfolio-link:hover {
+    background: rgba(0, 0, 0, 0.9);
+    color: #4CAF50;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.9);
+}
+
+.portfolio-link::before {
+    content: '🌐 ';
+    margin-right: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .lamp-shade {
+        width: 150px;
+        height: 90px;
+    }
+    
+    .light-glow {
+        width: 200px;
+        height: 200px;
+    }
+    
+    .controls {
+        top: 15px;
+        right: 15px;
+        padding: 10px 12px;
+    }
+    
+    .controls h2 {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+    
+    .brightness-display span {
+        font-size: 14px;
+    }
+    
+    .github-link {
+        top: 15px;
+        left: 15px;
+        width: 35px;
+        height: 35px;
+    }
+    
+    .github-link svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .portfolio-link {
+        bottom: 15px;
+        right: 15px;
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <!-- GitHub Link - Left Corner -->
+    <a href="https://github.com/Gopi1603" target="_blank" class="github-link" title="View on GitHub">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+        </svg>
+    </a>
+
+    <!-- Portfolio Link - Right Bottom Corner -->
+    <a href="https://gopichakradhar.me" target="_blank" class="portfolio-link" title="Visit Portfolio">
+        gopichakradhar.me
+    </a>
+
+    <div class="container">
+        <div class="lamp-container">
+            <!-- Redesigned Lamp Structure -->
+            <div class="lamp">
+                <!-- Light Glow Effect from bottom -->
+                <div class="light-glow" id="lightGlow"></div>
+                
+                <!-- Modern Lamp Design -->
+                <div class="lamp-shade" id="lampShade">
+                    <div class="shade-top"></div>
+                    <div class="shade-body"></div>
+                    <div class="shade-bottom"></div>
+                    <div class="shade-rim"></div>
+                </div>
+                
+                <!-- Lamp Stand with modern design -->
+                <div class="lamp-stand">
+                    <div class="stand-neck"></div>
+                    <div class="stand-joint"></div>
+                    <div class="stand-base">
+                        <div class="base-ring"></div>
+                        <div class="base-center"></div>
+                    </div>
+                </div>
+                
+                <!-- Redesigned Switch -->
+                <div class="lamp-switch" id="lampSwitch">
+                    <div class="switch-body">
+                        <div class="switch-button" id="switchButton"></div>
+                        <div class="switch-levels">
+                            <span class="level-indicator" data-level="0">OFF</span>
+                            <span class="level-indicator" data-level="1">LOW</span>
+                            <span class="level-indicator" data-level="2">HIGH</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Simplified Controls -->
+        <div class="controls">
+            <h2>Status</h2>
+            <div class="brightness-display">
+                <span id="brightnessLevel">OFF</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        class ModernLamp {
+    constructor() {
+        this.brightness = 0; // 0 = OFF, 1 = LOW, 2 = HIGH
+        
+        this.initElements();
+        this.bindEvents();
+        this.updateLamp();
+    }
+    
+    initElements() {
+        // Lamp elements
+        this.lampShade = document.getElementById('lampShade');
+        this.lightGlow = document.getElementById('lightGlow');
+        this.lampSwitch = document.getElementById('lampSwitch');
+        this.switchButton = document.getElementById('switchButton');
+        
+        // Control elements
+        this.brightnessLevel = document.getElementById('brightnessLevel');
+        
+        // Level indicators
+        this.levelIndicators = document.querySelectorAll('.level-indicator');
+    }
+    
+    bindEvents() {
+        // Switch click - cycles through 3 levels
+        this.lampSwitch.addEventListener('click', () => this.cycleBrightness());
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    this.cycleBrightness();
+                    break;
+                case 'Digit0':
+                    this.setBrightness(0);
+                    break;
+                case 'Digit1':
+                    this.setBrightness(1);
+                    break;
+                case 'Digit2':
+                    this.setBrightness(2);
+                    break;
+            }
+        });
+    }
+    
+    cycleBrightness() {
+        this.brightness = (this.brightness + 1) % 3;
+        this.updateLamp();
+        
+        // Add click animation
+        this.lampSwitch.style.transform = 'translateY(-50%) scale(0.95)';
+        setTimeout(() => {
+            this.lampSwitch.style.transform = 'translateY(-50%) scale(1)';
+        }, 150);
+    }
+    
+    setBrightness(level) {
+        this.brightness = Math.max(0, Math.min(2, level));
+        this.updateLamp();
+    }
+    
+    updateLamp() {
+        // Remove all existing classes
+        document.body.className = '';
+        this.lampShade.className = 'lamp-shade';
+        this.lightGlow.className = 'light-glow';
+        this.switchButton.className = 'switch-button';
+        this.brightnessLevel.className = '';
+        
+        // Update level indicators
+        this.levelIndicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === this.brightness);
+        });
+        
+        // Apply brightness level
+        switch(this.brightness) {
+            case 0:
+                // OFF
+                this.brightnessLevel.textContent = 'OFF';
+                this.brightnessLevel.classList.add('level-0');
+                this.switchButton.classList.add('level-0');
+                break;
+                
+            case 1:
+                // LOW
+                document.body.classList.add('level-1');
+                this.lampShade.classList.add('level-1');
+                this.lightGlow.classList.add('level-1');
+                this.switchButton.classList.add('level-1');
+                this.brightnessLevel.textContent = 'LOW';
+                this.brightnessLevel.classList.add('level-1');
+                break;
+                
+            case 2:
+                // HIGH
+                document.body.classList.add('level-2');
+                this.lampShade.classList.add('level-2');
+                this.lightGlow.classList.add('level-2');
+                this.switchButton.classList.add('level-2');
+                this.brightnessLevel.textContent = 'HIGH';
+                this.brightnessLevel.classList.add('level-2');
+                break;
+        }
+    }
+}
+
+// Initialize the lamp when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    new ModernLamp();
+    
+    // Add subtle floating particles
+    createMinimalParticles();
+});
+
+function createMinimalParticles() {
+    const container = document.querySelector('.container');
+    for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'minimal-particle';
+        particle.style.cssText = `
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            animation: gentleFloat ${6 + Math.random() * 4}s infinite ease-in-out;
+            animation-delay: ${Math.random() * 4}s;
+            left: ${20 + Math.random() * 60}%;
+            top: ${20 + Math.random() * 60}%;
+            pointer-events: none;
+        `;
+        
+        container.appendChild(particle);
+    }
+    
+    // Add gentle floating animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes gentleFloat {
+            0%, 100% { 
+                transform: translateY(0px); 
+                opacity: 0.1; 
+            }
+            50% { 
+                transform: translateY(-12px); 
+                opacity: 0.3; 
+            }
+        }
+        
+        .minimal-particle {
+            transition: opacity 0.5s ease;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+    </script>
+</body>
+</html>

@@ -997,3 +997,37 @@ body {
     background-color: rgba(228, 9, 19, 0);
   }
 }
+
+
+
+
+input, label {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+.stars {
+  position: relative;
+  
+  input {
+    display: none;
+    &:checked ~ label:not(.reset) {
+      animation: wobble 0.8s ease-out;
+      color: $star;
+    }
+    &:checked:not(#star-reset) ~ label.reset {
+      display: block;
+    }
+  }
+  label:not(.reset) {
+    display: inline-block;
+    float: right;
+    position: relative;
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+    padding: 2px;
+    cursor: pointer;
+    color: $outline;
+    transition: color 0.1s ease-out;
+    z-index: 10;
+  }
+}

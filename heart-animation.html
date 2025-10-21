@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heartbeat Animation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .heartbeat-container {
+            position: relative;
+            width: 80%;
+            height: 300px;
+        }
+
+        .line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 0, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            animation: pulseLine 5s linear forwards;
+        }
+
+        @keyframes pulseLine {
+            0% { clip-path: inset(0 100% 0 0); }
+            60% { clip-path: inset(0 40% 0 0); }
+            80% { clip-path: inset(0 20% 0 0); }
+            100% { clip-path: inset(0 0% 0 0); opacity: 0; }
+        }
+
+        .heartbeat-path {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+        }
+
+        svg {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            fill: none;
+            stroke: red;
+            stroke-width: 2;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            filter: drop-shadow(0 0 10px red);
+            animation: drawLine 5s linear forwards, morphHeart 1s ease-in-out 5s forwards;
+        }
+
+        @keyframes drawLine {
+            from { stroke-dasharray: 0 1000; }
+            to { stroke-dasharray: 1000 0; }
+        }
+
+        @keyframes morphHeart {
+            to {
+                d: path("M150 100 Q150 20 200 20 Q250 20 250 100 Q250 180 200 220 Q150 180 150 100 Z");
+                stroke: rgba(255, 0, 0, 0.8);
+                filter: drop-shadow(0 0 20px rgba(255, 0, 0, 1));
+            }
+        }
+
+        .final-text {
+            position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: white;
+            text-shadow: 0 0 20px red;
+            opacity: 0;
+            animation: fadeInText 2s ease-in-out 6s forwards;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .particles span {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.8;
+            animation: float 5s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heartbeat-container">
+        <div class="line"></div>
+
+        <div class="heartbeat-path">
+            <svg viewBox="0 0 300 100">
+                <path d="M0 50 H50 L60 30 L70 70 L80 50 H150 L160 20 L170 80 L180 50 H300" />
+            </svg>
+        </div>
+
+        <div class="final-text">You Make My Heart Skip a Beat ❤️</div>
+
+        <div class="particles" id="particles"></div>
+    </div>
+
+    <script>
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const heartEmojis = ['❤️', '💖', '💘', '💝', '💕'];
+
+            setInterval(() => {
+                let particle = document.createElement('span');
+                particle.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                particle.style.left = Math.random() * window.innerWidth + 'px';
+                particle.style.fontSize = Math.random() * 20 + 10 + 'px';
+                particle.style.animationDuration = Math.random() * 3 + 3 + 's';
+
+                container.appendChild(particle);
+
+                setTimeout(() => {
+                    particle.remove();
+                }, 6000);
+            }, 200);
+        }
+
+        createParticles();
+    </script>
+
+</body>
+</html>
