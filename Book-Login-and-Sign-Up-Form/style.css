@@ -1,0 +1,387 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700");
+*, *::after, *::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  height: 100%;
+  font-size: 65.2%;
+  box-sizing: border-box;
+  font-family: Montserrat, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-weight: 400;
+}
+
+body {
+  height: 100%;
+  background: #e9ebee;
+  color: #1d2129;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  perspective: 1500px;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: 3.5em;
+  text-align: center;
+}
+
+.version {
+  position: absolute;
+  bottom: 1em;
+  right: 2em;
+  border-radius: 40px;
+  background: #ff4b2b;
+  color: #fff;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 0.8em 2em;
+  letter-spacing: 1px;
+  transition: transform 80ms ease-in;
+}
+
+form input {
+  background: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+  font-size: 1.4em;
+}
+
+span {
+  color: #333;
+  font-size: 1.4em;
+  display: inline-block;
+  margin: 15px auto;
+  font-weight: 100;
+}
+
+span.remember {
+  float: left;
+}
+span.remember::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid #999;
+  vertical-align: top;
+  margin-right: 4px;
+}
+
+span.forget {
+  float: right;
+}
+
+span.clearfix {
+  clear: both;
+  display: table;
+}
+
+span.loginwith {
+  display: block;
+  width: 100%;
+  margin-top: 1em;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+span.loginwith::before {
+  content: "";
+  display: inline-block;
+  width: 42%;
+  height: 1px;
+  background: #aaa;
+  vertical-align: middle;
+  margin-right: 5%;
+}
+span.loginwith::after {
+  content: "";
+  display: inline-block;
+  width: 45%;
+  height: 1px;
+  background: #aaa;
+  vertical-align: middle;
+  margin-left: 5%;
+}
+
+span.copy {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  font-size: 1em;
+}
+
+button {
+  display: block;
+  margin: 1em auto;
+  border-radius: 40px;
+  border: 1px solid #ff4b2b;
+  background: #ff4b2b;
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: bold;
+  padding: 0.8em 2em;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+button svg {
+  vertical-align: middle;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
+  outline: none;
+}
+
+#container {
+  width: 95%;
+  max-width: 800px;
+  height: 500px;
+  position: relative;
+  border-radius: 20px;
+  box-shadow: 0 14px 28px -10px rgba(0, 0, 0, 0.1), 0 10px 10px -10px rgba(0, 0, 0, 0.02);
+  transform-style: preserve-3d;
+}
+#container > div {
+  position: absolute;
+  width: 50%;
+  min-width: 350px;
+  height: 100%;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  width: 100%;
+  padding: 2em 4em;
+  text-align: center;
+}
+.content p {
+  font-size: 1.4em;
+}
+
+.login {
+  left: 0;
+  background: #FAFAFA;
+  border-radius: 20px 0 0 20px;
+}
+.login button {
+  border-radius: 0px;
+  width: 100%;
+}
+.login svg {
+  margin: 1em;
+  stroke: #999;
+}
+
+.register {
+  right: 0;
+  z-index: 1;
+  border-radius: 0 20px 20px 0;
+  background: #FAFAFA;
+}
+.register button {
+  border-radius: 0px;
+  width: 100%;
+}
+.register svg {
+  margin: 1em;
+  stroke: #999;
+}
+
+.page {
+  right: 0;
+  color: #fff;
+  border-radius: 0 20px 20px 0;
+  transform-origin: left center;
+  transition: -webkit-animation 1s linear;
+  transition: animation 1s linear;
+  transition: animation 1s linear, -webkit-animation 1s linear;
+}
+.page button {
+  border-color: #fff;
+  background: transparent;
+}
+.page p {
+  margin: 2em auto;
+}
+
+.front {
+  background: linear-gradient(-45deg, #FFCF00 0%, #FC4F4F 100%) no-repeat 0 0/200%;
+  z-index: 3;
+}
+
+.back {
+  background: linear-gradient(135deg, #FC4F4F 0%, #FFCF00 100%) no-repeat 0 0/200%;
+  z-index: 2;
+}
+.back .content {
+  transform: rotateY(180deg);
+}
+
+.active .front {
+  -webkit-animation: rot-front 0.6s ease-in-out normal forwards;
+          animation: rot-front 0.6s ease-in-out normal forwards;
+}
+
+.active .back {
+  -webkit-animation: rot-back 0.6s ease-in-out normal forwards;
+          animation: rot-back 0.6s ease-in-out normal forwards;
+}
+
+.close .front {
+  -webkit-animation: close-rot-front 0.6s ease-in-out normal forwards;
+          animation: close-rot-front 0.6s ease-in-out normal forwards;
+}
+
+.close .back {
+  -webkit-animation: close-rot-back 0.6s ease-in-out normal forwards;
+          animation: close-rot-back 0.6s ease-in-out normal forwards;
+}
+
+@-webkit-keyframes rot-front {
+  from {
+    transform: translateZ(2px) rotateY(0deg);
+  }
+  to {
+    transform: translateZ(1px) rotateY(-180deg);
+  }
+}
+
+@keyframes rot-front {
+  from {
+    transform: translateZ(2px) rotateY(0deg);
+  }
+  to {
+    transform: translateZ(1px) rotateY(-180deg);
+  }
+}
+@-webkit-keyframes close-rot-front {
+  from {
+    transform: translateZ(1px) rotateY(-180deg);
+  }
+  to {
+    transform: translateZ(2px) rotateY(0deg);
+  }
+}
+@keyframes close-rot-front {
+  from {
+    transform: translateZ(1px) rotateY(-180deg);
+  }
+  to {
+    transform: translateZ(2px) rotateY(0deg);
+  }
+}
+@-webkit-keyframes rot-back {
+  from {
+    transform: translateZ(1px) rotateY(0deg);
+  }
+  to {
+    transform: translateZ(2px) rotateY(-180deg);
+  }
+}
+@keyframes rot-back {
+  from {
+    transform: translateZ(1px) rotateY(0deg);
+  }
+  to {
+    transform: translateZ(2px) rotateY(-180deg);
+  }
+}
+@-webkit-keyframes close-rot-back {
+  from {
+    transform: translateZ(2px) rotateY(-180deg);
+  }
+  to {
+    transform: translateZ(1px) rotateY(0deg);
+  }
+}
+@keyframes close-rot-back {
+  from {
+    transform: translateZ(2px) rotateY(-180deg);
+  }
+  to {
+    transform: translateZ(1px) rotateY(0deg);
+  }
+}
+.active .register .content {
+  -webkit-animation: show 0.7s ease-in-out normal forwards;
+          animation: show 0.7s ease-in-out normal forwards;
+}
+
+.close .register .content {
+  -webkit-animation: hide 0.7s ease-in-out normal forwards;
+          animation: hide 0.7s ease-in-out normal forwards;
+}
+
+.active .login .content {
+  -webkit-animation: hide 0.7s ease-in-out normal forwards;
+          animation: hide 0.7s ease-in-out normal forwards;
+}
+
+.close .login .content {
+  -webkit-animation: show 0.7s ease-in-out normal forwards;
+          animation: show 0.7s ease-in-out normal forwards;
+}
+
+@-webkit-keyframes show {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0.99;
+    transform: scale(0.99);
+  }
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0.99;
+    transform: scale(0.99);
+  }
+}
+@-webkit-keyframes hide {
+  from {
+    opacity: 0.99;
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+@keyframes hide {
+  from {
+    opacity: 0.99;
+    transform: scale(0.99);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}

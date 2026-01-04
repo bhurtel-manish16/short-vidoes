@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>On-Scroll Fire Transition (WebGL + GSAP ScrollTrigger)</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div class="page">
+    <div class="header">
+        The Magic Behind It
+    </div>
+    <div class="content">
+        <p>
+            This HTML page you're viewing is enhanced with a full-screen <b>&lt;canvas&gt;</b> element.
+            A fragment shader runs on this canvas, determining the color and opacity of each pixel.
+            The shader takes several inputs: <b>scroll position (or animation state)</b>, <b>time</b>, and <b>screen dimensions</b>.
+        </p>
+        <p>
+            Gathering <b>time</b> and <b>screen dimensions</b> is straightforward, but for <b>animation state</b> we leverage the <a href="https://animejs.com/documentation/" target="_blank">Anime.js</a> library.
+        </p>
+        <p>
+            With these inputs ready, we feed them into the shader as uniforms.
+            The WebGL component of this demo uses a minimal JS setup to render the fragment shader on a single, full-screen plane. No additional libraries are required.
+        </p>
+        <p>
+            The shader utilizes <a href="https://thebookofshaders.com/12/" target="_blank">Perlin Noise</a> to create dynamic visual effects.
+        </p>
+        <p>
+            Initially, we generate a semi-transparent mask to shape a glowing effect. This mask is created with low-scale Perlin Noise and uses the <b>scroll position</b> as a threshold.
+            By adjusting the thresholds on the same Perlin Noise, we can
+            <br>
+            (a) gradually dim parts of the screen, darkening pixels before they become transparent
+            <br>
+            (b) create a border effect along the edges, which we use to apply a glowing outline
+        </p>
+        <p>
+            The glow itself is produced using two Perlin Noise functions - one for the shape and one for the color. Both functions operate on a larger scale and are animated with the <b>time</b> input instead of the <b>scroll position</b>.
+        </p>
+
+        <p class="last-line">
+            <a href="https://www.linkedin.com/in/johndoe/" target="_blank">LinkedIn</a> | <a href="https://codepen.io/johndoe" target="_blank">CodePen</a> | <a href="https://twitter.com/johndoe" target="_top">Twitter (X)</a>
+        </p>
+    </div>
+</div>
+
+
+<canvas id="fire-overlay"></canvas>
+<div class="scroll-msg">
+    <div>Hello 👋</div>
+    <div>scroll me</div>
+    <div class="arrow-animated">&darr;</div>
+</div>
+
+<script type="x-shader/x-fragment" id="vertShader">
+    precision mediump float;
+
+    varying vec2 vUv;
+    attribute vec2 a_position;
+
+    void main() {
+        vUv = a_position;
+        gl_Position = vec4(a_position, 0.0, 1.0);
+    }
+</script>
+
+
+<script type="x-shader/x-fragment" id="fragShader">
+    precision mediump float;
+
+    varying vec2 vUv;
+    uniform vec2 u_resolution;
+    uniform float u_progress;
+    uniform float u_time;
+
+    float rand(vec2 n) {
+        return fract(cos(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+    }
+    float noise(vec2 n) {
+        const vec2 d = vec2(0., 1.);
+        vec2 b = floor(n), f = smoothstep(vec2(0.0), vec2(1.0), fract(n));
+        return mix(mix(rand(b), rand(b + d.yx), f.x), mix(rand(b + d.xy), rand(b + d.yy), f.x), f.y);
+    }
+    float fbm(vec2 n) {
+        float total = 0.0, amplitude = .4;
+        for (int i = 0; i < 4; i++) {
+            total += noise(n) * amplitude;
+            n += n;
+            amplitude *= 0.6;
+        }
+        return total;
+    }
+
+    void main() {
+        vec2 uv = vUv;
+        uv.x *= min(1., u_resolution.x / u_resolution.y);
+        uv.y *= min(1., u_resolution.y / u_resolution.x);
+
+        float t = u_progress;
+        vec3 color = vec3(1., 1., .95);
+
+        float main_noise = 1. - fbm(.75 * uv + 10. - vec2(.3, .9 * t));
+
+        float paper_darkness = smoothstep(main_noise - .1, main_noise, t);
+        color -= vec3(.99, .95, .99) * paper_darkness;
+
+        vec3 fire_color = fbm(6. * uv - vec2(0., .005 * u_time)) * vec3(6., 1.4, .0);
+        float show_fire = smoothstep(.4, .9, fbm(10. * uv + 2. - vec2(0., .005 * u_time)));
+        show_fire += smoothstep(.7, .8, fbm(.5 * uv + 5. - vec2(0., .001 * u_time)));
+
+        float fire_border = .02 * show_fire;
+        float fire_edge = smoothstep(main_noise - fire_border, main_noise - .5 * fire_border, t);
+        fire_edge *= (1. - smoothstep(main_noise - .5 * fire_border, main_noise, t));
+        color += fire_color * fire_edge;
+
+        float opacity = 1. - smoothstep(main_noise - .0005, main_noise, t);
+
+        gl_FragColor = vec4(color, opacity);
+    }
+
+</script>
+<!-- partial -->
+  <script src='https://unpkg.com/gsap@3/dist/gsap.min.js'></script>
+<script src='https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js'></script><script  src="./script.js"></script>
+
+</body>
+</html>

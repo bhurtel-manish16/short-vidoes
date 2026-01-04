@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Password Input Light | @coding.stella</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<form onsubmit="return false">
+  <div class="form-item">
+    <label>Username</label>
+    <div class="input-wrapper">
+      <input type="text" id="username" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true"/>
+    </div>
+  </div>
+  <div class="form-item">
+    <label>Password</label>
+    <div class="input-wrapper">
+      <input type="password" id="password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true"/>
+      <button type="button" id="eyeball">
+        <div class="eye"></div>
+      </button>
+      <div id="beam"></div>
+    </div>
+  </div>
+  <button id="submit">Sign in</button>
+</form>
+
+  <script>
+    const root = document.documentElement;
+const eye = document.getElementById('eyeball');
+const beam = document.getElementById('beam');
+const passwordInput = document.getElementById('password');
+
+root.addEventListener('mousemove', (e) => {
+  let rect = beam.getBoundingClientRect();
+  let mouseX = rect.right + (rect.width / 2); 
+  let mouseY = rect.top + (rect.height / 2);
+  let rad = Math.atan2(mouseX - e.pageX, mouseY - e.pageY);
+  let degrees = (rad * (20 / Math.PI) * -1) - 350;
+
+  root.style.setProperty('--beamDegrees', `${degrees}deg`);
+});
+
+eye.addEventListener('click', e => {
+  e.preventDefault();
+  document.body.classList.toggle('show-password');
+  passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password'
+  passwordInput.focus();
+});
+  </script>
+
+</body>
+</html>
