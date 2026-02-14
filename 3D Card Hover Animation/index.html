@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>3D Card Hover Animation</title>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+    
+  <body>
+  <div class="card">
+  <div class="overflow">
+    <div class="model">
+      <model-viewer src="https://assets.codepen.io/3421562/leaves_keyboard.glb" shadow-intensity="0.4"></model-viewer>
+    </div>
+  </div>
+  <div class="glass">
+    <div class="gradient-blur"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+  <div class="content">
+    <h2>LeafKey</h2>
+    <p>A keyboard that brings the tranquility of the forest to your fingertips.</p>
+    <div class="options">
+      <div onclick="changeModelStyle(this, 0);" style="background: #f2c173;"></div>
+      <div onclick="changeModelStyle(this, 60);" style="background: #96dd78;"></div>
+      <div onclick="changeModelStyle(this, 110);" style="background: #6ee5bc;"></div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="overflow">
+    <div class="model">
+      <model-viewer src="https://assets.codepen.io/3421562/topo_keyboard.glb" shadow-intensity="0.4"></model-viewer>
+    </div>
+  </div>
+  <div class="glass">
+    <div class="gradient-blur"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+  <div class="content">
+    <h2>TopoKey</h2>
+    <p>Custom illuminated keyboard with neon topology mapped out in every key.</p>
+    <div class="options">
+      <div onclick="changeModelStyle(this, 0);" style="background: #2cb4f0;"></div>
+      <div onclick="changeModelStyle(this, 110);" style="background: #ff69e4;"></div>
+      <div onclick="changeModelStyle(this, 290);" style="background: #16b83f;"></div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="overflow">
+    <div class="model">
+      <model-viewer src="https://assets.codepen.io/3421562/panda_keyboard.glb" shadow-intensity="0.4"></model-viewer>
+    </div>
+  </div>
+  <div class="glass">
+    <div class="gradient-blur"><div></div><div></div><div></div><div></div><div></div><div></div></div>
+  </div>
+  <div class="content">
+    <h2>PandaKey</h2>
+    <p>Panda, panda, panda, panda, panda, panda... panda</p>
+    <div class="options">
+     <div onclick="changeModelStyle(this, 0);" style="background: #1e1e1e;"></div>
+      <div onclick="changeModelStyle(this, 0, 1);" style="background: #eee;"></div>
+    </div>
+  </div>
+</div>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>

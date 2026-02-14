@@ -1,0 +1,183 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.sky-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(0deg, #62a0d8 0%, #2178d1 50%, #085cb3 100%);
+  z-index: -1;
+  transition: filter 0.3s ease;
+}
+
+svg {
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.cloud-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  filter: url(#filter);
+}
+
+.cloud {
+  anchor-name: --cloud;
+  width: 680px;
+  height: 280px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  will-change: transform;
+  touch-action: none;
+  border: none;
+  outline: none;
+}
+
+.cloud:active {
+  cursor: grabbing;
+}
+
+textarea::-webkit-resizer {
+  display: none;
+}
+
+textarea::-moz-resizer {
+  display: none;
+}
+
+.resize-handle {
+  position: absolute;
+  position-anchor: --cloud;
+  top: anchor(bottom);
+  left: anchor(right);
+  transform: translate(-100%, -100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  font-size: 42px;
+  color: white;
+}
+
+.cloud-container:has(.cloud:hover) ~ .resize-handle {
+  opacity: 0.5;
+}
+
+.weather-slider-container {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sun {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 9px;
+  width: 14px;
+  height: 14px;
+  color: white;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+.storm {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 9px;
+  width: 14px;
+  height: 14px;
+  color: white;
+  pointer-events: none;
+  mix-blend-mode: difference;
+}
+
+.weather-slider {
+  width: 300px;
+  padding: 2px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0),
+    rgba(0, 0, 0, 0.3)
+  );
+  border-radius: 20px;
+  outline: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+.weather-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid white;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+
+.weather-slider::-webkit-slider-thumb:hover {
+  background: white;
+  transition: none;
+}
+
+@keyframes lightning-glow {
+  0% {
+    opacity: 0.8;
+  }
+
+  15%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.lightning-glow {
+  position: absolute;
+  position-anchor: --cloud;
+  top: anchor(center);
+  left: anchor(center);
+  --lightning-x: 0px;
+  --lightning-y: 0px;
+  transform: translate(
+    calc(-50% + var(--lightning-x)),
+    calc(-50% + var(--lightning-y))
+  );
+  width: 33%;
+  height: 33%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, white, rgba(255, 255, 255, 0));
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: overlay;
+  filter: blur(50px);
+}
+
+.lightning-glow.flash {
+  animation: lightning-glow 0.8s ease-out;
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Cloud Generator</title>
+  <link rel="stylesheet" href="./style.css">
+  <link rel="apple-touch-icon" href="https://codetap.org/assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="https://codetap.org/assets/img/favicon.png">
+</head>
+
+<body>
+  <div class="sky-background"></div>
+
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <filter id="filter" x="-50%" y="-50%" width="200%" height="200%" style="color-interpolation-filters:sRGB">
+      <feTurbulence type="fractalNoise" seed="462" baseFrequency="0.011" numOctaves="5" result="noise1" />
+      <feTurbulence type="fractalNoise" seed="462" baseFrequency="0.011" numOctaves="2" result="noise2" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="20" />
+      <feDisplacementMap in="blur1" scale="100" in2="noise1" result="cloud1" />
+      <feFlood id="shadow2" flood-color="rgb(215,215,215)" flood-opacity="0.2" />
+      <feComposite operator="in" in2="SourceGraphic" />
+      <feOffset dx="-10" dy="-3" />
+      <feMorphology radius="20" />
+      <feGaussianBlur stdDeviation="20" />
+      <feDisplacementMap scale="100" in2="noise1" result="cloud2" />
+      <feFlood id="shadow3" flood-color="rgb(66,105,146)" flood-opacity="0.2" />
+      <feComposite operator="in" in2="SourceGraphic" />
+      <feOffset dx="-10" dy="40" />
+      <feMorphology radius="0 40" />
+      <feGaussianBlur stdDeviation="20" />
+      <feDisplacementMap scale="80" in2="noise2" result="cloud3" />
+      <feFlood id="shadow4" flood-color="rgb(0,0,0)" flood-opacity="0.4" />
+      <feComposite operator="in" in2="SourceGraphic" />
+      <feOffset dx="20" dy="60" />
+      <feMorphology radius="0 65" />
+      <feGaussianBlur stdDeviation="30" />
+      <feDisplacementMap scale="100" in2="noise2" result="cloud4" />
+
+      <feFlood id="shadow5" flood-color="rgb(0,0,0)" flood-opacity="0.4" />
+      <feComposite operator="in" in2="SourceGraphic" />
+      <feOffset dx="20" dy="70" />
+      <feMorphology radius="0 200" />
+      <feGaussianBlur stdDeviation="30" />
+      <feDisplacementMap scale="100" in2="noise2" result="cloud5" />
+
+      <feMerge>
+        <feMergeNode in="cloud1" id="feMergeNode954" />
+        <feMergeNode in="cloud2" id="feMergeNode956" />
+        <feMergeNode in="cloud3" id="feMergeNode958" />
+        <feMergeNode in="cloud4" id="feMergeNode960" />
+        <feMergeNode in="cloud5" id="feMergeNode962" />
+      </feMerge>
+    </filter>
+  </svg>
+
+  <div class="cloud-container">
+    <textarea class="cloud" readonly></textarea>
+  </div>
+  <div class="lightning-glow"></div>
+
+  <div class="resize-handle">◞</div>
+
+  <div class="weather-slider-container">
+    <svg class="sun" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="16px" height="16px" viewBox="0 0 20 20">
+      <circle cx="10" cy="10" r="4" stroke-width="0" fill="currentColor"></circle>
+      <line x1="10" y1="2" x2="10" y2="3.5" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="2" data-color="color-2"></line>
+      <line x1="15.657" y1="4.343" x2="14.596" y2="5.404" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="2" data-color="color-2"></line>
+      <line x1="18" y1="10" x2="16.5" y2="10" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="2" data-color="color-2"></line>
+      <line x1="15.657" y1="15.657" x2="14.596" y2="14.596" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="2" data-color="color-2"></line>
+      <line x1="10" y1="18" x2="10" y2="16.5" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="2" data-color="color-2"></line>
+      <line x1="4.343" y1="15.657" x2="5.404" y2="14.596" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="2" data-color="color-2"></line>
+      <line x1="2" y1="10" x2="3.5" y2="10" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="2" data-color="color-2"></line>
+      <line x1="4.343" y1="4.343" x2="5.404" y2="5.404" fill="none" stroke="currentColor" stroke-linecap="round"
+        stroke-linejoin="round" stroke-width="2" data-color="color-2"></line>
+    </svg>
+    <svg class="storm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+      <path
+        d="M96 416a16 16 0 01-14.3-23.16l24-48a16 16 0 0128.62 14.32l-24 48A16 16 0 0196 416zM120 480a16 16 0 01-14.3-23.16l16-32a16 16 0 0128.62 14.32l-16 32A16 16 0 01120 480zM376 416a16 16 0 01-14.3-23.16l24-48a16 16 0 0128.62 14.32l-24 48A16 16 0 01376 416zM400 480a16 16 0 01-14.3-23.16l16-32a16 16 0 0128.62 14.32l-16 32A16 16 0 01400 480z" />
+      <path
+        d="M405.84 136.9a151.25 151.25 0 00-47.6-81.9 153 153 0 00-241.81 51.86C60.5 110.16 16 156.65 16 213.33 16 272.15 63.91 320 122.8 320h66.31l-12.89 77.37A16 16 0 00192 416h32v64a16 16 0 0029 9.3l80-112a16 16 0 00-13-25.3h-27.51l8-32h103.84a91.56 91.56 0 001.51-183.1z" />
+    </svg>
+    <input type="range" min="0" max="100" value="0" class="weather-slider" id="weatherSlider">
+  </div>
+  <script src="./script.js"></script>
+
+</body>
+
+</html>

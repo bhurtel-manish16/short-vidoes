@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111317" />
+    <meta property="og:image" content="https://www.cerpow.com/jelly/jelly_00085.jpg" />
+    <link rel="stylesheet" href="style.css">
+    <script defer src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+    <script defer src="https://unpkg.com/gsap@3/dist/Draggable.min.js"></script>
+    <script defer src="https://unpkg.com/gsap@3/dist/InertiaPlugin.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/ismobilejs@1/dist/isMobile.min.js"></script>
+    <script defer defer src="main.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <main>
+  <div class="bottom-controls">
+    <h1>Drag vertically to squeeze</h1>
+
+    <div class="controls-container">
+      <label class="checkbox-label">
+        <input type="checkbox" id="followMouseCheckbox" />
+        <span class="checkmark-icon"></span>
+        Follow mouse
+      </label>
+    </div>
+  </div>
+
+  <div class="canvas-wrapper">
+    <canvas width="1280" height="960"></canvas>
+    <div class="drag-trigger"></div>
+  </div>
+  <div class="loader"><span></span></div>
+</main>
+</body>
+</html>=

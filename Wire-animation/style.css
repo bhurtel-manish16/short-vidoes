@@ -1,0 +1,167 @@
+body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #e0e0e0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.2s;
+        }
+
+        canvas {
+            display: block;
+            cursor: none; /* Hide default cursor */
+        }
+
+        /* --- UI Controls --- */
+
+        /* Open Button (Visible by default) */
+        #openControls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background 0.2s;
+            z-index: 100;
+        }
+
+        #openControls:hover {
+            transform: translateY(-2px);
+            background: #fff;
+        }
+
+        /* Panel Container (Hidden by default) */
+        #controls {
+            display: none; /* Default hidden */
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 340px;
+            max-height: 85vh;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+            backdrop-filter: blur(12px);
+            user-select: none;
+            border: 1px solid rgba(255,255,255,0.6);
+            z-index: 101;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header with Hide button */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #111;
+        }
+
+        #closeControls {
+            background: #f0f0f0;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            color: #555;
+            transition: background 0.2s;
+        }
+        #closeControls:hover {
+            background: #ddd;
+            color: #000;
+        }
+
+        /* Scrollbar */
+        #controls::-webkit-scrollbar { width: 6px; }
+        #controls::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 3px; }
+
+        /* Controls Layout */
+        .control-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .color-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .color-item { flex: 1; }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            cursor: pointer;
+            height: 6px;
+            background: #ddd;
+            border-radius: 3px;
+            appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #444;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover { background: #000; }
+
+        input[type="file"] {
+            font-size: 11px;
+            width: 100%;
+            color: #555;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 30px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            background: none;
+            padding: 2px;
+        }
+
+        .divider {
+            height: 1px;
+            background: #eee;
+            margin: 15px 0;
+        }
