@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Crystal Heart Animation | CodeTap</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://use.typekit.net/trt3ngp.css">
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+
+  <canvas class="webgl"></canvas>
+  <h1 class="h1text">this is for you</h1>
+  <button id="play-music" type="button" aria-label="Play music">
+    <svg fill="currentColor" viewBox="0 0 512 512" width="100" title="music">
+      <path
+        d="M470.38 1.51L150.41 96A32 32 0 0 0 128 126.51v261.41A139 139 0 0 0 96 384c-53 0-96 28.66-96 64s43 64 96 64 96-28.66 96-64V214.32l256-75v184.61a138.4 138.4 0 0 0-32-3.93c-53 0-96 28.66-96 64s43 64 96 64 96-28.65 96-64V32a32 32 0 0 0-41.62-30.49z"
+      />
+    </svg>
+  </button>
+  <script type="x-shader/x-vertex" id="vertexShader">
+      #define M_PI 3.1415926535897932384626433832795
+    uniform float uTime;
+    uniform float uSize;
+    attribute float aScale;
+    attribute vec3 aColor;
+    attribute float random;
+    attribute float random1;
+    attribute float aSpeed;
+    varying vec3 vColor;
+    varying vec2 vUv;
+
+    void main() {
+      float sign = 2.0* (step(random, 0.5) -.5);
+      float t = sign*mod(-uTime *  aSpeed* 0.005  + 10.0*aSpeed*aSpeed, M_PI);
+      float a = pow(t, 2.0) * pow((t - sign * M_PI), 2.0);
+      float radius = 0.14;
+      vec3 myOffset =
+          vec3(t,  1.0, 0.0);
+      myOffset = vec3(radius *16.0 * pow(sin(t), 2.0) * sin(t), radius * (13.0 * cos(t) - 5.0 * cos(2.0 * t) - 2.0 * cos(3.0 * t) - cos(4.0 * t)), .15*(a*(random1 - .5))*sin(abs(10.0*(sin(.2*uTime + .2*random)))*t));
+      vec3 displacedPosition = myOffset;
+      vec4 modelPosition = modelMatrix * vec4(displacedPosition.xyz, 1.0);
+
+      vec4 viewPosition = viewMatrix * modelPosition;
+      viewPosition.xyz += position * aScale * uSize * pow(a, .5) * .5;
+      gl_Position = projectionMatrix * viewPosition;
+
+      vColor = aColor;
+      vUv = uv;
+    }
+  </script>
+
+  <script type="x-shader/x-fragment" id="fragmentShader">
+      varying vec3 vColor;
+    varying vec2 vUv;
+
+    void main() {
+      vec2 uv = vUv;
+      vec3 color = vColor;
+      float strength = distance(uv, vec2(0.5));
+      strength *= 2.0;
+      strength = 1.0 - strength;
+      gl_FragColor = vec4(strength * color, 1.0);
+    }
+  </script>
+  <script type="x-shader/x-vertex" id="vertexShader1">
+      #define M_PI 3.1415926535897932384626433832795
+
+
+    uniform float uTime;
+    uniform float uSize;
+    attribute float aScale;
+    attribute vec3 aColor;
+    attribute float phi;
+    attribute float random;
+    attribute float random1;
+    varying vec3 vColor;
+    varying vec2 vUv;
+
+    void main() {
+      float t = 0.01 * uTime + 12.0;
+      float angle = phi;
+
+      t = mod((-uTime + 100.0) * 0.06* random1 + random *2.0 * M_PI , 2.0 * M_PI);
+      vec3 myOffset = vec3(5.85*cos(angle * (t )), 2.0*(t - M_PI), 3.0*sin(angle * (t )/t));
+    vec4 modelPosition = modelMatrix * vec4(myOffset, 1.0);
+      vec4 viewPosition = viewMatrix * modelPosition;
+      viewPosition.xyz += position * aScale * uSize;
+      gl_Position = projectionMatrix * viewPosition;
+
+      vColor = aColor;
+      vUv = uv;
+    }
+  </script>
+
+  <script type="x-shader/x-fragment" id="fragmentShader1">
+      uniform sampler2D uTex;
+    varying vec3 vColor;
+    varying vec2 vUv;
+
+    void main() {
+      vec2 uv = vUv;
+      vec3 color = vColor;
+      float strength = distance(uv, vec2(0.5, .65));
+      strength *= 2.0;
+      strength = 1.0 - strength;
+      vec3 texture = texture2D(uTex, uv).rgb;
+      gl_FragColor = vec4(texture * color * (strength + .3), 1.);
+    }
+  </script>
+  <script type="module" src="./script.js"></script>
+</body>
+
+
+</html>

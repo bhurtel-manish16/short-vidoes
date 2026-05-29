@@ -1,0 +1,63 @@
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+p {
+  margin: 0 0;
+  position: absolute;
+  font: 16px Verdana;
+  color: #eee;
+  height: 25px;
+  top: calc( 100vh - 30px );
+  text-shadow: 0 0 2px white;
+}
+p a {
+  text-decoration: none;
+  color: #aaa;
+}
+span {
+  font-size: 11px;
+}
+p > a:first-of-type {
+  font-size: 20px;
+}
+body {
+  overflow: hidden;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a0f3a 50%, #0d1a2e 100%);
+  animation: bgShift 15s ease-in-out infinite;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(255, 20, 147, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(65, 105, 225, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(50, 205, 50, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  animation: glowShift 10s ease-in-out infinite;
+}
+
+@keyframes bgShift {
+  0%, 100% {
+    background: linear-gradient(135deg, #0a0e27 0%, #1a0f3a 50%, #0d1a2e 100%);
+  }
+  50% {
+    background: linear-gradient(135deg, #1a0f3a 0%, #0d2a4a 50%, #1a1a3a 100%);
+  }
+}
+
+@keyframes glowShift {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

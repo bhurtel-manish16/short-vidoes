@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Anime.js Periodic Table Auto Layout animation</title>
+    <link rel='stylesheet' href='https://codepen.io/juliangarnier/pen/PwzmygE.css'><link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <div class="controls">
+  <div class="controls-group display br">
+    <button class="is-active toggle" id="table">table</button>
+    <button class="toggle" id="sphere">sphere</button>
+    <button class="toggle" id="helix">helix</button>
+    <button class="toggle" id="grid">grid</button>
+  </div>
+</div>
+<div id="scene">
+  <div id="scene-content" data-layout="table"></div>
+</div>
+<div class="credits">
+  3D transform calculations ported from this three.js <a href="https://threejs.org/examples/css3d_periodictable.html" target="_blank">demo</a>.
+</div>
+<template id="element">
+  <button class="element" data-color="0">
+    <div class="element-number"></div>
+    <div class="element-symbol"></div>
+    <div class="element-title"></div>
+    <div class="element-description"></div>
+  </button>
+</template>
+    <script type="module" src="./script.js"></script>
+
+  </body>
+  
+</html>

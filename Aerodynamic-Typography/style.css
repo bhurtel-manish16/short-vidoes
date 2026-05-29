@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css2?family=Recursive:wght@300..1000&family=Roboto+Flex:wght@100..1000&display=swap");
+body {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Recursive", monospace;
+  font-variation-settings: "MONO" 1;
+  background: linear-gradient(100deg, color(display-p3 0.11 0.57 0.99) 14%, color(display-p3 0.35 0.21 0.75) 98%);
+}
+
+#scene {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+#scene .letter {
+  position: absolute;
+  text-align: center;
+  margin-top: 4%;
+  font-size: clamp(3rem, 7vw + 2rem, 40rem);
+  line-height: 1;
+  text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
+  text-transform: uppercase;
+  color: white;
+  transform-origin: center;
+  /* Shorthand for center center */
+  will-change: transform, font-weight;
+  transition: font-weight 0.1s ease-out;
+  border-bottom: 4px solid cyan;
+}
+
+.desk-fan {
+  position: fixed;
+  top: 50%;
+  left: -50px;
+  transform: translateY(-50%);
+  width: 400px;
+  z-index: -1;
+  pointer-events: none;
+  stroke: black;
+  fill: none;
+}
+.desk-fan #fan-blades {
+  transform-origin: 200px 180px;
+  will-change: transform;
+  stroke: #d0d5db;
+}
+
+.ui-layer {
+  position: fixed;
+  inset: 30px 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+.ui-layer .instruction {
+  font-weight: 500;
+  font-size: 14px;
+  color: cyan;
+  letter-spacing: 3px;
+  text-shadow: 0 0.5px 0 rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.25), 0 0 8px rgba(255, 255, 255, 0.125);
+}
+.ui-layer button {
+  appearance: none;
+  background: transparent;
+  border: 2px solid cyan;
+  padding: 10px 20px;
+  font: 700 14px "Roboto Flex", sans-serif;
+  letter-spacing: 1px;
+  cursor: pointer;
+  color: cyan;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+.ui-layer button:hover {
+  background: #1a1a1a;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Aerodynamic Typography</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <div class="ui-layer">
+  <div class="instruction">USE MOUSE WHEEL TO SPIN FAN BLADES</div>
+  <button id="reset-btn">RESET</button>
+</div>
+<svg class="desk-fan" viewbox="0 0 400 400">
+  <path opacity="0.3" d="M154.096 124.583C168.492 108.233 189.038 99.4786 210.098 101.218C299.917 108.629 296.01 237.152 217.564 263.452C107.445 300.375 113.386 156.857 150.984 124.583" stroke-opacity="0.8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path opacity="0.25" d="M173.956 150.293C181.324 142.172 189.281 137.207 199.605 134.723C249.649 122.691 248.421 185.463 222.752 213.241C196.322 241.838 156.547 205.896 162.695 172.628" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M210.613 237.269C214.99 257.35 227.535 279.166 214.749 297.97" stroke-opacity="0.7" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path>
+  <path d="M194.225 299.183C207.276 298.891 232.761 297.996 240.176 297.996" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path>
+  <g id="fan-blades">
+    <path d="M196.606 172.231C196.223 160.879 194.145 147.833 197.22 136.663C221.773 47.4913 238.064 157.027 195.374 180.283" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M208.232 181.011C221.296 177.33 273.492 176.16 273.492 202.297C273.492 211.187 226.263 219.925 198.82 182.384" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M197.435 180.283C209.788 200.69 189.132 261.382 164.194 256.848C152.876 254.79 163.559 195.514 192.511 184.985" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path>
+    <path d="M183.625 188.103C172.57 198.365 119.9 190.872 123.144 170.323C128.066 139.124 179.312 152.737 194.225 171.64" stroke-opacity="0.9" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"></path>
+  </g>
+</svg>
+<div id="scene"></div>
+    <script type="module" src="./script.js"></script>
+
+  </body>
+  
+</html>
